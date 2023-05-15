@@ -1,6 +1,6 @@
 # ProxyPoolxSocks Socks代理池服务端自动化搭建工具
 
-![](https://cdn.anyiblog.top/product/proxypoolsocks/cover/logo.png)
+![](https://cdn.anyiblog.top/product/proxypoolsocks/cover/logo_min.png)
 
 声明：本工具仅供以安全为目的的学习交流使用，任何人不得将其用于非法用途以及盈利等目的，否则后果自行承担。
 
