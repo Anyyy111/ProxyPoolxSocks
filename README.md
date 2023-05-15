@@ -2,9 +2,9 @@
 
 ![](https://cdn.anyiblog.top/product/proxypoolsocks/cover/logo_min.png)
 
+Github项目： https://github.com/Anyyy111/ProxyPoolxSocks
+
 声明：本工具仅供以安全为目的的学习交流使用，任何人不得将其用于非法用途以及盈利等目的，否则后果自行承担。
-
-
 
 ## 0x01 介绍
 
