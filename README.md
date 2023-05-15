@@ -1,4 +1,6 @@
-# ProxyPoolxSocks 自定义Socks代理池服务端自动化搭建
+# ProxyPoolxSocks Socks代理池服务端自动化搭建工具
+
+![](https://cdn.anyiblog.top/product/proxypoolsocks/cover/logo.png)
 
 声明：本工具仅供以安全为目的的学习交流使用，任何人不得将其用于非法用途以及盈利等目的，否则后果自行承担。
 
@@ -7,6 +9,8 @@
 作者: Anyyy
 
 博客: https://www.anyiblog.top	
+
+本文地址： https://www.anyiblog.top/2023/05/15/20230515/
 
 ProxyPoolxSocks 是一个代理池服务端工具，可以导入自定义的socks节点，理论来说只要你的代理够多，就可以有效防止Ban IP操作绕过一些WAF。
 
@@ -40,8 +44,6 @@ python3 Client-check/client.py
 ```
 
 测试可用之后可跳转至 **0x05 常见工具代理配置**
-
-
 
 ## 0x03 效果展示
 
