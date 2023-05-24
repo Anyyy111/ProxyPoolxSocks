@@ -39,11 +39,19 @@ def socks5(node):
     #proxy_type=None, addr=None, port=None, rdns=True, username=None, password=None
     proxy_type = socks.SOCKS5
 
-    b64_user_pass = node.split('@')[0].split('socks://')[1]
+    if "@" in node:
 
-    addr, port = node.split('@')[1].split(':')
+        b64_user_pass = node.split('@')[0].split('socks://')[1]
 
-    username, password = base64.b64decode(b64_user_pass).decode().split(':')
+        addr, port = node.split('@')[1].split(':')
+
+        username, password = base64.b64decode(b64_user_pass).decode().split(':')
+
+    else: #没有带@的情况，默认账密为空
+
+        addr, port = node.split('socks://')[1].split(':')
+
+        username, password = '',''
     
     return (proxy_type,addr,port,username,password)
 

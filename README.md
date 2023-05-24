@@ -124,7 +124,13 @@ logname = f'Logs/Server_{time.strftime("%Y%m%d_%H%M%S")}.log'
 
 node.txt是必须配置项，因为程序读取的节点就是来自这里。其中一行代表一个代理地址。
 
-形式如下：
+**添加的形式要以以下的形式添加：**
+
+`socks://base64(username:password)@IP:PORT`
+
+`socks5://IP:PORT`
+
+
 
 ```
 ## socks://base64(username:password)@IP:PORT
@@ -135,11 +141,30 @@ socks://YWFhYWE6YWFhYWE=@152.xx.xxx.225:38829
 socks://NTU1NTU6NTU1NTU=@47.xxx.xxx.214:59108#4
 ```
 
-同样支持base64形式：
+
+
+同样支持将所有节点base64加密后的形式：
 
 ```
 c29ja3M6Ly9OVFUxTlRVNk5UVTFOVFU9QDgueHh4Lnh4eC4xMjo1OTEwOCMzCnNvY2tzOi8vWVdGaFlXRTZZV0ZoWVdFPUA4Lnh4eC54eHguMTI6Mzg4MTAjMQpzb2NrczovL1YzRkRjazFvVlVsdFZUcGFSMjFsVVVOMGVVNWFAMTUyLnh4Lnh4eC4yMjU6Mzg4MjkKc29ja3M6Ly9OVFUxTlRVNk5UVTFOVFU9QDQ3Lnh4eC54eHguMjE0OjU5MTA4IzQ=
 ```
+
+
+
+（2023.5.24更新）
+
+如果你的socks节点不带有任何账密，可以直接添加，就像这样：
+
+```
+##socks5://IP:PORT
+
+socks://8.xxx.xxx.12:59108
+socks://8.xxx.xxx.12:38810
+socks://152.xx.xxx.225:38829
+socks://47.xxx.xxx.214:59108
+```
+
+
 
 你可以直接从V2ray等代理软件里复制节点，选中节点并复制
 
@@ -147,7 +172,7 @@ c29ja3M6Ly9OVFUxTlRVNk5UVTFOVFU9QDgueHh4Lnh4eC4xMjo1OTEwOCMzCnNvY2tzOi8vWVdGaFlX
 
 
 
-或者如果你购买了机场，你可以在你的代理软件里找到你订阅的服务器地址，然后在文件夹输入以下命令即可：
+如果你购买了机场，你也可以在你的代理软件里找到你**订阅的服务器地址**，然后在文件夹输入以下命令即可：
 
 （一般订阅地址长这样：`https://xxx.com/api/v1/client/subscribe?token=xxxxxx`）
 
@@ -157,11 +182,15 @@ curl https://xxx.com/api/v1/client/subscribe?token=xxxxxx -o node.txt
 
 ![image-20230515164116160](imgs/image-20230515164116160.png)
 
-*程序只会调用订阅地址中存在socks协议的部分，其它部分忽略。
+
+
+当你的node.txt存有节点信息后，就可以进行下一步的操作了。
 
 
 
 **注：测试的时候只拿了V2ray的socks节点来测试，如果你是其它的代理软件请将节点修改成符合以上的形式后写入node.txt中。**
+
+***程序只会调用订阅地址中存在socks协议的部分，其它部分忽略。**
 
 **这里程序不提供免费的节点，如果你有socks节点就可以自定义添加。**
 
