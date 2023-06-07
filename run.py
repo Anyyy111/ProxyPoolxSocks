@@ -86,6 +86,8 @@ def setproxy(nodes):
 
                 updatenode()
 
+                break
+
             # 选取随机节点
             node = nodes[random.randint(0,len(nodes)-1)] 
 
