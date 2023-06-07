@@ -81,7 +81,6 @@ def check(node):
     try:
 
         requests.get(CHECKURL,proxies=proxies,timeout=CHECKTIME)
-
         newlist.append(node)
 
     except:
@@ -134,11 +133,11 @@ def getNode():
 
             count = len(threading.enumerate())
 
-            print(f"\r[*] 剩余节点数量:{count}",end='')
+            print(f"\r[*] 剩余节点数量:{count}",end='\t')
 
             sys.stdout.flush()
 
-            if count == 1:
+            if count <= 3:
                 
                 open('.nodedata','w').write(str(newlist))
 

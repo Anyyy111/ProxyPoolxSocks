@@ -1,6 +1,6 @@
 # ProxyPoolxSocks Socks代理池服务端自动化搭建工具
 
-![](https://cdn.anyiblog.top/product/proxypoolsocks/cover/logo_min.png)
+![](http://cdn.anyiblog.top/product/proxypoolsocks/cover/logo_min.png)
 
 Github项目： https://github.com/Anyyy111/ProxyPoolxSocks
 
@@ -14,9 +14,9 @@ Github项目： https://github.com/Anyyy111/ProxyPoolxSocks
 
 本文地址： https://www.anyiblog.top/2023/05/15/20230515/
 
-ProxyPoolxSocks 是一个代理池服务端工具，可以导入自定义的socks节点，其作用是利用多个代理IP绕过WAF防火墙。
+ProxyPoolxSocks 是一个代理池服务端工具，可以导入自定义的socks节点，其作用是利用多个代理IP绕过WAF防火墙。同时它支持代理池之间的迭代更新和切换。
 
-当前处于测试阶段，任何问题欢迎向我发送邮件：anyiguys@qq.com
+当前处于测试阶段，任何问题欢迎向我发送邮件：anyiguys@qq.com 或向我提交issue
 
 工具支持Windows和Linux系统。
 
@@ -84,8 +84,10 @@ port = 12000
 """
 必要参数
 times: 代理切换速度 单位 ms 默认为 3 秒
+detectTime: 更新可用节点的频率 单位 ms 默认为 5 分钟 不启用添为0即可
 """
 times = 3000
+detectTime = 300000
 
 """
 可选参数
@@ -113,6 +115,7 @@ logname = f'Logs/Server_{time.strftime("%Y%m%d_%H%M%S")}.log'
 - username & password **服务端的连接账号密码**，如果留空则代表不需要密码，**如果填写必须二者都填写 且客户端连接要账密一致才能使用代理**
 - port **服务端搭起的端口**，默认为12000，最终连接的端口就是这
 - **times** **代理池之间代理切换的速度**，单位为毫秒，times越小切换越快，尽量不要太小容易出问题。
+- **detectTime 更新可用节点的频率**，单位位毫秒，设置为0即可关闭。程序会隔一段时间重新检测可用节点，以免过期。
 - ServerLog **显示服务端的信息**，设置为0则代表关闭 也就代表只显示客户端的连接信息。
 - Record **开启日志文件记录**，设置为0则代表关闭 日志文件存放在 **Logs/Server_xxxx_xxxx.log**
 

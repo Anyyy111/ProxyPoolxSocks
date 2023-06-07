@@ -29,7 +29,7 @@ def logo():
 |⭐Blog: https://www.anyiblog.top/                                              |
 *********************************************************************************"""+end)
 
-def start():
+def info():
     print(green+"==========================================================")
     print('| 节点获取完毕！当前可用节点数量：'+yellow+str(len(nodes))+green)
     print('| 已成功搭建本地代理服务器 配置信息如下：')
@@ -37,10 +37,14 @@ def start():
     print('|',yellow+f"请自行前往客户端添加你的 公网/内网 IP 例: x.x.x.x:{port}"+green)
     print("=========================================================="+end)
     if Record == 1:open(logname,'w',encoding='utf-8');print(yellow+f'Tips:日志已开始记录至 {logname}'+end)
+
+def start():
+    info()
     Server = ThreadingTCPServer(('0.0.0.0', port), DYProxy)
     Server.serve_forever()
 
 def clear():
+
     platform = sys.platform
 
     if 'win' in platform:
@@ -51,16 +55,37 @@ def clear():
 
         os.system('clear')
 
+def updatenode():
+    global nodes,rounds
+    
+    rounds += 1
+    print(f'{yellow}[{time.strftime("%X")}][Node] [*] Round: {rounds} 定时任务执行！ 正在更新节点...... (每{detectTime / 1000}秒更新){end}')
+    nodes = getNode()
+
+    clear()
+    info()
+
+    print(f'{green}[{time.strftime("%X")}][Node] [+] 节点更新成功 当前节点数量: {len(nodes)} {end}')
+    setproxy(nodes)
+
 def setproxy(nodes):
     
     nodes_ = []
 
     maxcount = len(nodes)
 
+    t1 = time.perf_counter()
+
     while True:
  
         try:
-            
+
+            t2 = time.perf_counter()
+
+            if detectTime != 0 and t2 - t1 >= (detectTime / 1000): #超时重置节点
+
+                updatenode()
+
             # 选取随机节点
             node = nodes[random.randint(0,len(nodes)-1)] 
 
@@ -77,7 +102,7 @@ def setproxy(nodes):
 
             if ServerLog == 1:
 
-                print(f'{cyan}[{time.strftime("%X")}][Server]{yellow} [*] 服务端当前代理服务器为 ：{server} 当前剩余: {len(nodes)}{end}')
+                print(f'{cyan}[{time.strftime("%X")}][Server]{yellow} [*] 服务端当前代理服务器为：{server} 当前剩余: {len(nodes)}{end}')
 
             # 延迟
             time.sleep(times / 1000)
@@ -96,6 +121,8 @@ def setproxy(nodes):
             pass
 
 if __name__ == '__main__':
+    
+    rounds = 0
     
     try:
 
@@ -131,13 +158,12 @@ if __name__ == '__main__':
 
             clear()
 
-            t = threading.Thread(target=start,args=())
-
-            t.start()
+            threading.Thread(target=start,args=()).start()
             
             time.sleep(0.5)
 
             setproxy(nodes)
+
 
     except KeyboardInterrupt:
 
