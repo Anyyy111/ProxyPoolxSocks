@@ -7,6 +7,7 @@ import socket
 import struct
 import socks
 import time
+import os
 
 SOCKS_VERSION = 5
 
@@ -59,7 +60,7 @@ class DYProxy(Tcp):
         if self.username != '' and self.password != '': ##账密都填写的情况
             if 2 not in set(methods):
                 print(f"{blue}[{self.time}][Client]{red} [-] 客户端:  {self.client_address}  无账密信息，无法与客户端验证-已挂断连接{end}")
-                self.logdata(f"[{self.time}][Client] [-] 客户端:  {self.client_address}  无账密信息，无法与客户端验证-已挂断连接")
+                self.logdata(f"[-] 客户端:  {self.client_address}  无账密信息，无法与客户端验证-已挂断连接")
                 self.server.close_request(self.request)
                 return
             self.connection.sendall(struct.pack("!BB", SOCKS_VERSION, 2))
@@ -107,7 +108,7 @@ class DYProxy(Tcp):
                 bind_address = remote.getsockname()
                 p=socks.getdefaultproxy()
                 print(f'{blue}[{self.time}][Client]{green} [+] 客户端:  {self.client_address}  已建立连接: {address,str(port)} 代理服务器: {":".join([p[1],str(p[2])])}{end}')
-                self.logdata(f'[{self.time}][Client] [+] 客户端:  {self.client_address}  已建立连接: {address,str(port)} 代理服务器: {":".join([p[1],str(p[2])])}')
+                self.logdata(f'[+] 客户端:  {self.client_address}  已建立连接: {address,str(port)} 代理服务器: {":".join([p[1],str(p[2])])}')
             else:
                 self.server.close_request(self.request)
             addr = struct.unpack("!I", socket.inet_aton(bind_address[0]))[0]
@@ -115,7 +116,7 @@ class DYProxy(Tcp):
             reply = struct.pack("!BBBBIH", SOCKS_VERSION, 0, 0, address_type, addr, port)
         except Exception as err:
             print(f'{blue}[{self.time}][Client]{red} [-] 客户端:  {self.client_address} 连接: {address,str(port)}  发生错误: {err}{end}')
-            self.logdata(f'[{self.time}][Client] [-] 客户端:  {self.client_address} 连接: {address,str(port)}  发生错误: {err}')
+            self.logdata(f'[-] 客户端:  {self.client_address} 连接: {address,str(port)}  发生错误: {err}')
             # 响应拒绝连接的错误
             reply = self.ReplyFaild(address_type, 5)
         self.connection.sendall(reply)      # 发送回复包
@@ -154,7 +155,7 @@ class DYProxy(Tcp):
             return True
         # 验证失败, status != 0
         print(f"{blue}[{self.time}][Client]{red} [-] 客户端:  {self.client_address}  密码验证错误 已断开连接!{end}")
-        self.logdata(f"[{self.time}][Client] [-] 客户端:  {self.client_address}  密码验证错误 已断开连接!")
+        self.logdata(f"[-] 客户端:  {self.client_address}  密码验证错误 已断开连接!")
 
         response = struct.pack("!BB", version, 0xFF)
         self.connection.sendall(response)
@@ -187,15 +188,24 @@ class DYProxy(Tcp):
                         break
             except Exception as err:
                 print(f'{blue}[{self.time}][Client]{red} [-] 客户端:  {self.client_address}  发生错误: {err}{end}')
-                self.logdata(f'[{self.time}][Client] [-] 客户端:  {self.client_address}  发生错误: {err}')
+                self.logdata(f'[-] 客户端:  {self.client_address}  发生错误: {err}')
                 pass
     
     def logdata(self,data):
+        global Record
 
         if Record:
             
-            log = open(logname,'a')
+            if os.path.getsize(logname) > FileSize:
 
-            log.write(data+'\n')
+                print(f'{red}[{self.time}][Logger] [-] 当前日志大小超过最大文件大小（{FileSize} KB） 已停止记录')
 
-            log.close()
+                open(logname, 'a', encoding='utf-8').write(f'[{self.time}][Logger] [-] 日志文件大小超出设定大小（{FileSize} KB） 已停止记录')
+
+                Record = 0
+
+            else:
+
+                logger.info(data)
+
+                        

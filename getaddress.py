@@ -71,11 +71,12 @@ def check(node):
 
     CHECKTIME = 5
 
-    CHECKURL = "https://www.baidu.com/"
+    CHECKURL = "http://123.156.230.90"
 
     # 构造socks5代理
     proxies = {
-        'https':'socks5://{}:{}@{}:{}'.format(node[3],node[4],node[1],node[2])
+        'https':'socks5://{}:{}@{}:{}'.format(node[3],node[4],node[1],node[2]),
+        'http':'socks5://{}:{}@{}:{}'.format(node[3],node[4],node[1],node[2])
     }
 
     try:
@@ -88,44 +89,22 @@ def check(node):
         pass
 
 
-def getNode():
-
+def getNode(nodes=[]):
     global newlist
 
     node_list = []
 
-    nodes = readconfig()
 
-    # 选取包含socks的协议
+    if nodes != []: ## detect检测并迭代原先的node
 
-    if nodes:
-    
-        print(f'{yellow}[{time.strftime("%X")}][Node] [+] 节点读取成功! {end}')
-
-        for node in nodes:
-            
-            if node != '':
-
-                if "socks://" in node:
-
-                    node_list.append(socks5(node))
-                
-        if node_list == []:
-
-            print(f'{red}[{time.strftime("%X")}][Config] [-] 当前节点为空，已退出运行。请在 node.txt 设置节点信息{end}')
-            
-            os._exit(0)
-
-        # 对剩下的节点进行速度筛选 选去不可用的节点
-
-        print(f'{yellow}[{time.strftime("%X")}][Node] [*] 已开始测试可用节点 -> 当前测试节点共有: {len(node_list)}个 {end}')
+        node_list = nodes
 
         newlist = []
 
         for node in node_list:
 
             t = (threading.Thread(target=check,args=(node,)))
-            
+                
             t.start()
 
 
@@ -138,12 +117,63 @@ def getNode():
             sys.stdout.flush()
 
             if count <= 3:
-                
+                    
                 open('.nodedata','w').write(str(newlist))
 
                 return newlist
-    else:
-        
-        print(f'{red}[{time.strftime("%X")}][Config] [-] 当前节点为空，已退出运行。请在 node.txt 设置节点信息{end}')
     
-        os._exit(0)
+    else: ## 只检测node.txt的节点 不迭代原先节点
+
+        nodes = readconfig()
+
+        # 选取包含socks的协议
+
+        if nodes:
+        
+            print(f'{yellow}[{time.strftime("%X")}][Node] [+] 节点读取成功! {end}')
+
+            for node in nodes:
+                
+                if node != '':
+
+                    if "socks://" in node:
+
+                        node_list.append(socks5(node))
+                    
+            if node_list == []:
+
+                print(f'{red}[{time.strftime("%X")}][Config] [-] 当前节点为空，已退出运行。请在 node.txt 设置节点信息{end}')
+                
+                os._exit(0)
+
+            # 对剩下的节点进行速度筛选 选去不可用的节点
+
+            print(f'{yellow}[{time.strftime("%X")}][Node] [*] 已开始测试可用节点 -> 当前测试节点共有: {len(node_list)}个 {end}')
+
+            newlist = []
+
+            for node in node_list:
+
+                t = (threading.Thread(target=check,args=(node,)))
+                
+                t.start()
+
+
+            while True:
+
+                count = len(threading.enumerate())
+
+                print(f"\r[*] 剩余节点数量:{count}",end='\t')
+
+                sys.stdout.flush()
+
+                if count <= 3:
+                    
+                    open('.nodedata','w').write(str(newlist))
+
+                    return newlist
+        else:
+            
+            print(f'{red}[{time.strftime("%X")}][Config] [-] 当前节点为空，已退出运行。请在 node.txt 设置节点信息{end}')
+        
+            os._exit(0)
