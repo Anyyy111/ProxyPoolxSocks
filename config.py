@@ -17,11 +17,11 @@ port = 12000
 
 """
 必要参数
-times: 代理切换速度 单位 ms 默认为 3 秒
-detectTime: 更新可用节点的频率 单位 ms 默认为 5 分钟 不启用添为0即可
+times: 代理切换速度 单位 s 默认为 3 秒
+detectTime: 更新可用节点的频率 单位 s 默认为 5 分钟 不启用添为0即可
 """
-times = 3000
-detectTime = 300000
+times = 3
+detectTime = 60 * 5
 
 """
 可选参数

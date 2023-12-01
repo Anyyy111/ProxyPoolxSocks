@@ -6,7 +6,6 @@ import threading
 import base64
 import socks
 import time
-import sys
 import os
 
 """
@@ -112,9 +111,7 @@ def getNode(nodes=[]):
 
             count = len(threading.enumerate())
 
-            print(f"\r[*] 剩余节点数量:{count}",end='\t')
-
-            sys.stdout.flush()
+            print(f"\r[*] 剩余节点数量:{count}",end='')
 
             if count <= 3:
                     
@@ -163,9 +160,7 @@ def getNode(nodes=[]):
 
                 count = len(threading.enumerate())
 
-                print(f"\r[*] 剩余节点数量:{count}",end='\t')
-
-                sys.stdout.flush()
+                print(f"\r[*] 剩余节点数量:{count}",end='')
 
                 if count <= 3:
                     
